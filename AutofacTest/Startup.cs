@@ -7,6 +7,7 @@ using AutofacTest.Autofac.Modules;
 using AutofacTest.MediatR.Behavior;
 using AutofacTest.Services;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,6 +42,7 @@ namespace AutofacTest
         {
             builder.RegisterType<DelayService>().As<IDelayService>().SingleInstance();
             builder.RegisterModule<MediatrModule>();
+            builder.RegisterGeneric(typeof(RequestExceptionActionProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterType<LogIpInfoResponseBehavior>().AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(ExecutionTimeBehavior<,>)).As(typeof(IPipelineBehavior<,>));
         }
